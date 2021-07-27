@@ -3,11 +3,15 @@ package com.example.eventbusapplication;
 import androidx.appcompat.app.AppCompatActivity;
 //import androidx.fragment.app.FragmentContainerView;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public class MainActivity extends AppCompatActivity {
     private TextView textView;
@@ -35,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+        Log.i("onEvent Function","called");
+
     }
 
     @Override
@@ -43,8 +49,15 @@ public class MainActivity extends AppCompatActivity {
         EventBus.getDefault().unregister(this);
     }
 
-    @Subscribe
-    public void onEvent(MyEvent event){
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onSecondEvent(MyEvent event){
+        Log.i("onSecondEvent","called");
+        Log.i("StickyTagHere",event.getEditText().toString());
+    }
+    @Subscribe(sticky = true,threadMode = ThreadMode.MAIN)
+    public void onEvent(MyEvent event) {
+        Log.i("onEvent Function","called");
         textView.setText(event.getEditText());
+        Toast.makeText(this,"Toast",Toast.LENGTH_SHORT).show();
     }
 }

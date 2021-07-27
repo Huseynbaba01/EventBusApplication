@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +27,6 @@ public class BlankFragment extends Fragment {
     private Button button;
     public MyEvent myEvent = new MyEvent();
 
-
-
     public BlankFragment() {
         // Required empty public constructor
     }
@@ -40,16 +39,16 @@ public class BlankFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.i("onCreateView","called");
         View view = inflater.inflate(R.layout.fragment_blank, container, false);
         editText = (EditText) view.findViewById(R.id.editText);
         button = (Button) view.findViewById(R.id.button);
         button.setOnClickListener(
                 viewSecond -> {
                     myEvent.setEditText(editText.getText());
-                    EventBus.getDefault().post(myEvent);
+                    EventBus.getDefault().postSticky(myEvent);
                 }
         );
-
         return view;
     }
 
@@ -57,4 +56,6 @@ public class BlankFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
+
+
 }
